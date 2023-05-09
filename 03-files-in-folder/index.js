@@ -19,21 +19,21 @@ fs.promises.readdir(folderPath)
     .join('\n'))
   .then((resultString) => stdout.write(resultString));
 
-  function getFileStatsString(contentPath) {
-    return new Promise((resolve, reject) => {
-      fs.stat(contentPath, (error, stat) => {
-        if (error) {
-          reject(error);
-        }
+function getFileStatsString(contentPath) {
+  return new Promise((resolve, reject) => {
+    fs.stat(contentPath, (error, stat) => {
+      if (error) {
+        reject(error);
+      }
 
-        if (stat.isDirectory()) {
-          reject('is directory');
-        }
+      if (stat.isDirectory()) {
+        reject('is directory');
+      }
 
-        const { name, ext } = path.parse(contentPath);
-        const { size } = stat;
-        const statString = `${name} - ${ext.slice(1)} - ${Math.ceil(size / 1024)}kb`;
-        resolve(statString);
-      });
+      const { name, ext } = path.parse(contentPath);
+      const { size } = stat;
+      const statString = `${name} - ${ext.slice(1)} - ${Math.ceil(size / 1024)}kb`;
+      resolve(statString);
     });
-  }
+  });
+}

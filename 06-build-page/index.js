@@ -11,10 +11,10 @@ const STYLE_BUNDLE_NAME = 'style.css';
 const FOLDER_TO_COPY_NAME = 'assets';
 
 Promise.all([
-    bundleMarkup(),
-    bundleStyles(__dirname, TASK_FOLDER_TO_BUNDLE, STYLE_BUNDLE_NAME, DIST_FOLDER_NAME),
-    copyDirectory(__dirname, FOLDER_TO_COPY_NAME, path.join(DIST_FOLDER_NAME, FOLDER_TO_COPY_NAME)),
-  ])
+  bundleMarkup(),
+  bundleStyles(__dirname, TASK_FOLDER_TO_BUNDLE, STYLE_BUNDLE_NAME, DIST_FOLDER_NAME),
+  copyDirectory(__dirname, FOLDER_TO_COPY_NAME, path.join(DIST_FOLDER_NAME, FOLDER_TO_COPY_NAME)),
+])
   .then((results) => results.forEach((item) => stdout.write(item + '\n')))
   .then(() => stdout.write('----------\nbuild done'))
   .catch((error) => console.log(error));
@@ -112,14 +112,15 @@ async function bundleStyles(rootDir, taskFolderToBundle, styleBundleName, distFo
     return async () => {
       const readStream= fs.createReadStream(path.join(rootDir, taskFolderToBundle, name), 'utf-8');
       readStream.on('data', (chunk) => writeStream.write(chunk));
-      await new Promise((resolve,reject) => {
+      await new Promise((resolve) => {
         readStream.on('end', () => {
           resolve();
         });
-      })
+      });
       return 'writing-end';
-    }
+    };
   });
+  
   await fileToBundlePromises.reduce((acc, writeFunc) => acc.then(writeFunc), Promise.resolve());
   return 'style merge done';
 }

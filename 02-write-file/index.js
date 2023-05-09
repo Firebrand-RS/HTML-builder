@@ -8,7 +8,7 @@ const errorCallback = (err) => {
   if (err) {
     throw err;
   }
-}
+};
 
 fs.writeFile(filePath, '', errorCallback);
 stdout.write('Enter any text:\n--------------\n');
@@ -23,5 +23,5 @@ stdin.on('data', (inputData) => {
 
 
 process.on('SIGINT', () => process.exit());
-process.on('exit', () => stdout.write(`--------------\nBye!`));
+process.on('exit', () => stdout.write('--------------\nBye!'));
 

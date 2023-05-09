@@ -35,13 +35,13 @@ async function bundleStyles(rootDir, taskFolderToBundle, styleBundleName, distFo
     return async () => {
       const readStream= fs.createReadStream(path.join(rootDir, taskFolderToBundle, name), 'utf-8');
       readStream.on('data', (chunk) => writeStream.write(chunk));
-      await new Promise((resolve,reject) => {
+      await new Promise((resolve) => {
         readStream.on('end', () => {
           resolve();
         });
-      })
+      });
       return 'writing-end';
-    }
+    };
   });
   await fileToBundlePromises.reduce((acc, writeFunc) => acc.then(writeFunc), Promise.resolve());
   return 'style merge done';
